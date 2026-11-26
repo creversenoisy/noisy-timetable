@@ -157,6 +157,10 @@ function wake(){
   render();
   if(Date.now()-lastTry>60000)refresh();
 }
+// ?level= 로 들어온 주소는 # 방식으로 바꾼다. 그래야 ← 를 눌렀을 때 레벨 선택으로 돌아간다.
+var q=new URLSearchParams(location.search).get('level');
+if(q&&!location.hash)history.replaceState(null,'',location.pathname+'#'+q.toUpperCase().replace(/[^A-Z0-9-]/g,''));
+else if(q)history.replaceState(null,'',location.pathname+location.hash);
 window.addEventListener('hashchange',function(){render(true);wake();});
 document.addEventListener('visibilitychange',wake);
 window.addEventListener('pageshow',wake);
